@@ -41,6 +41,21 @@ bool Backtrack::isValid(Configuration config) {
             continue;
         }
 
+        bool complete = true;
+
+        for (int ind = 0; ind < 3; ++ind) {
+            if (c1.getValue(ind) == 0 || c2.getValue(ind) == 0) {
+                complete = false;
+                break;
+            }
+        }
+
+        if (complete) {
+            if (c1.getSum() != c2.getSum()) {
+                return false;
+            }
+        }
+
         int bridgeVal = c1.getValue(2) + c2.getValue(0);
 
         if (bridgeVal != bridgeValues.at(i)) {
