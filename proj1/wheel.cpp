@@ -31,9 +31,8 @@ int main(int argc, char** argv) {
     Backtrack b;
     Configuration* solution = b.solve(c);
     if (solution) {
-        for (auto it : solution->getCircles()) {
-            cout << it << endl;
-        }
+        cout << *(solution) << endl;
+        delete solution;
     } else {
         cout << "No solution!" << endl;
     }

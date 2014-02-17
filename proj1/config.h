@@ -20,11 +20,19 @@ class Configuration {
 
         const std::vector<int>& getBridgeValues();
 
+        int getPos();
+
+        void incPos();
+
         bool operator==(const Configuration& rhs);
 
         bool operator!=(const Configuration& rhs);
 
+        friend std::ostream& operator<<(
+                std::ostream& os, const Configuration& c);
+
     private:
+        int pos;
         std::vector<Circle> circles;
         std::vector<int> bridgeValues;
         std::set<int> available;

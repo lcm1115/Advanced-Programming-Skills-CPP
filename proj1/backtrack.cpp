@@ -37,11 +37,11 @@ bool Backtrack::isValid(Configuration config) {
         Circle c1 = circles.at(i);
         Circle c2 = circles.at(j);
 
-        if (c1.getValue(0) == 0 || c2.getValue(2) == 0) {
+        if (c1.getValue(1) == 0 || c2.getValue(0) == 0) {
             continue;
         }
 
-        int bridgeVal = c1.getValue(0) + c2.getValue(2);
+        int bridgeVal = c1.getValue(1) + c2.getValue(0);
 
         if (bridgeVal != bridgeValues.at(i)) {
             return false;
@@ -54,26 +54,20 @@ bool Backtrack::isValid(Configuration config) {
 vector<Configuration> Backtrack::getSuccessors(Configuration config) {
     vector<Configuration> successors;
 
-    for (size_t i = 0; i < config.getCircles().size(); ++i) {
-        for (size_t j = 0; j < 3; ++j) {
-            if (config.getCircle(i)->getValue(j) == 0) {
-                for (auto val : config.getAvailable()) {
-                    Configuration c(config);
-                    c.getCircle(i)->setValue(j, val);
-                    c.removeAvailable(val);
-                    successors.push_back(c);
-                }
-            }
-        }
+    int circle = config.getPos() / 3;
+    int circleIndex = config.getPos() % 3;
+    for (auto val : config.getAvailable()) {
+        Configuration c(config);
+        c.getCircle(circle)->setValue(circleIndex, val);
+        c.removeAvailable(val);
+        c.incPos();
+        successors.push_back(c);
     }
 
     return successors;
 }
 
 Configuration* Backtrack::solve(Configuration config) {
-    if (config.getCircle(0)->getValue(0) == 6) {
-        cout << *(config.getCircle(0)) << endl;
-    }
     if (isGoal(config)) {
         return new Configuration(config);
     } else {
