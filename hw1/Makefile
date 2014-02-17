@@ -1,5 +1,5 @@
 ##############################################################################
-# This makefile originally created by gmakemake, Sun Feb  2 17:05:38 EST 2014
+# This makefile originally created by gmakemake, Thu Feb  6 16:00:53 EST 2014
 # 
 # Note: documentation for (GNU) make can be found online at 
 #       http://www.gnu.org/software/make/manual/make.html
@@ -27,7 +27,7 @@
 ####
 
 # The various source files for our program(s)
-MAIN_CPP_FILES  =  hw1.cpp main.cpp
+MAIN_CPP_FILES  =  main.cpp
 OTHER_CPP_FILES =  corridor.cpp point.cpp
 
 MAIN_C_FILES  = 
@@ -210,11 +210,6 @@ purge reallyclean: clean
 # Rules to generate our applications (if new apps are added, create a 
 # new item like those below, for the new application)
 #
-
-$(EXEDIR)/hw1:	$(OBJDIR)/hw1.$(OBJEXT) $(OTHER_OBJFILES)
-	@echo "$@..."
-	@mkdir -p $(EXEDIR)
-	$(CXX) -o $@ $^ $(LDFLAGS)
 
 $(EXEDIR)/main:	$(OBJDIR)/main.$(OBJEXT) $(OTHER_OBJFILES)
 	@echo "$@..."
