@@ -37,11 +37,11 @@ bool Backtrack::isValid(Configuration config) {
         Circle c1 = circles.at(i);
         Circle c2 = circles.at(j);
 
-        if (c1.getValue(1) == 0 || c2.getValue(0) == 0) {
+        if (c1.getValue(2) == 0 || c2.getValue(0) == 0) {
             continue;
         }
 
-        int bridgeVal = c1.getValue(1) + c2.getValue(0);
+        int bridgeVal = c1.getValue(2) + c2.getValue(0);
 
         if (bridgeVal != bridgeValues.at(i)) {
             return false;
