@@ -14,8 +14,11 @@ class Backtrack {
 
         T* solve(const T& config);
 
+        void printPath();
+
     private:
-        bool path;
+        bool _path;
+        std::vector<std::string> _configPath;
 };
 
 #endif  // BACKTRACK_H

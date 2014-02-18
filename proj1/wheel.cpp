@@ -31,6 +31,10 @@ int main(int argc, char** argv) {
     Backtrack<Configuration> b(path);
     Configuration* solution = b.solve(c);
     if (solution) {
+        if (path) {
+            b.printPath();
+        }
+
         cout << *(solution) << endl;
         delete solution;
     } else {
