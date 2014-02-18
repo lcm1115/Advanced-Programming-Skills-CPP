@@ -18,6 +18,8 @@ class Configuration {
 
         void removeAvailable(int val);
 
+        int getBridgeValue(int index);
+
         const std::vector<int>& getBridgeValues();
 
         int getPos();

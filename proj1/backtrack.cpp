@@ -9,33 +9,16 @@
 using namespace std;
 
 bool Backtrack::isGoal(Configuration config) {
-    vector<Circle> circles = config.getCircles();
-    vector<int> bridgeValues = config.getBridgeValues();
-
-    if (config.getAvailable().size() > 0) {
-        return false;
-    }
-
-    for (int i = 0; i < circles.size(); ++i) {
-        Circle c1 = circles.at(i);
-        Circle c2 = circles.at((i + 1) % circles.size());
-
-        if (c1.getSum() != c2.getSum()) {
-            return false;
-        }
-    }
-
-    return true;
+    return config.getAvailable().size() == 0;
 }
 
 bool Backtrack::isValid(Configuration config) {
-    vector<Circle> circles = config.getCircles();
-    vector<int> bridgeValues = config.getBridgeValues();
+    const vector<Circle>& circles = config.getCircles();
 
     for (int i = 0; i < circles.size(); ++i) {
         int j = (i + 1) % circles.size();
-        Circle c1 = circles.at(i);
-        Circle c2 = circles.at(j);
+        const Circle& c1 = circles.at(i);
+        const Circle& c2 = circles.at(j);
 
         if (c1.getValue(2) == 0 || c2.getValue(0) == 0) {
             continue;
@@ -58,7 +41,7 @@ bool Backtrack::isValid(Configuration config) {
 
         int bridgeVal = c1.getValue(2) + c2.getValue(0);
 
-        if (bridgeVal != bridgeValues.at(i)) {
+        if (bridgeVal != config.getBridgeValue(i)) {
             return false;
         }
     }
@@ -71,11 +54,11 @@ vector<Configuration> Backtrack::getSuccessors(Configuration config) {
 
     int circle = config.getPos() / 3;
     int circleIndex = config.getPos() % 3;
+    config.incPos();
     for (auto val : config.getAvailable()) {
         Configuration c(config);
         c.getCircle(circle)->setValue(circleIndex, val);
         c.removeAvailable(val);
-        c.incPos();
         successors.push_back(c);
     }
 

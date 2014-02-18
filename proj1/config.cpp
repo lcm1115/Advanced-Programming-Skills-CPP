@@ -37,6 +37,10 @@ const vector<Circle>& Configuration::getCircles() {
     return circles;
 }
 
+int Configuration::getBridgeValue(int index) {
+    return bridgeValues.at(index);
+}
+
 const vector<int>& Configuration::getBridgeValues() {
     return bridgeValues;
 }

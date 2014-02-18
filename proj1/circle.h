@@ -12,9 +12,9 @@ class Circle {
 
         void setValue(int index, int value);
 
-        int getValue(int index);
+        int getValue(int index) const;
 
-        int getSum();
+        int getSum() const;
 
         friend std::ostream& operator<<(std::ostream& os, const Circle& c);
 

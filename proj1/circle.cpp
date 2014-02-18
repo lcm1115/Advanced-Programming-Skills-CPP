@@ -8,11 +8,11 @@ void Circle::setValue(int index, int value) {
     values.at(index) = value;
 }
 
-int Circle::getValue(int index) {
+int Circle::getValue(int index) const {
     return values.at(index);
 }
 
-int Circle::getSum() {
+int Circle::getSum() const {
     return values[0] + values[1] + values[2];
 }
 
