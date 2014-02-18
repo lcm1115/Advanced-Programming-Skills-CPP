@@ -28,7 +28,7 @@ int main(int argc, char** argv) {
     }
 
     Configuration c(circles, bridgeValues);
-    Backtrack b(true);
+    Backtrack b(path);
     Configuration* solution = b.solve(c);
     if (solution) {
         cout << *(solution) << endl;

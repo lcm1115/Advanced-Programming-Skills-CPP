@@ -3,11 +3,15 @@
 #include <algorithm>
 #include <ostream>
 #include <set>
+#include <string>
+#include <sstream>
 #include <vector>
 
 using std::equal;
 using std::ostream;
+using std::ostringstream;
 using std::set;
+using std::string;
 using std::vector;
 
 Configuration::Configuration(const vector<Circle>& c, const vector<int>& bv) {
@@ -51,6 +55,12 @@ int Configuration::getPos() const {
 
 void Configuration::incPos() {
     ++pos;
+}
+
+string Configuration::str() const {
+    ostringstream oss;
+    oss << *this;
+    return oss.str();
 }
 
 bool Configuration::operator==(const Configuration& rhs) {

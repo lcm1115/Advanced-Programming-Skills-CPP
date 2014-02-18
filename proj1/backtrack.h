@@ -4,6 +4,9 @@
 #include "circle.h"
 #include "config.h"
 
+#include <string>
+#include <vector>
+
 class Backtrack {
     public:
         Backtrack(bool path);
@@ -15,6 +18,9 @@ class Backtrack {
         std::vector<Configuration> getSuccessors(const Configuration& config);
 
         Configuration* solve(const Configuration& config);
+        
+        Configuration* solveHelper(
+                const Configuration& config, std::vector<std::string>* path);
 
     private:
         bool path;

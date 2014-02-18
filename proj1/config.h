@@ -4,6 +4,7 @@
 #include "circle.h"
 
 #include <set>
+#include <string>
 #include <vector>
 
 class Configuration {
@@ -25,6 +26,8 @@ class Configuration {
         int getPos() const;
 
         void incPos();
+
+        std::string str() const;
 
         bool operator==(const Configuration& rhs);
 

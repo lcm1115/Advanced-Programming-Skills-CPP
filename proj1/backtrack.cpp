@@ -60,14 +60,29 @@ vector<Configuration> Backtrack::getSuccessors(const Configuration& config) {
 }
 
 Configuration* Backtrack::solve(const Configuration& config) {
+    vector<string> configPath;
+    Configuration* solution = solveHelper(config, &configPath);
+
+    if (configPath.size() > 0 && path) {
+        for (auto it = configPath.rbegin() + 1; it != configPath.rend(); ++it) {
+            cout << *it << endl;
+        }
+    }
+
+    return solution;
+}
+
+Configuration* Backtrack::solveHelper(
+        const Configuration& config, vector<string>* path) {
     if (isGoal(config)) {
         return new Configuration(config);
     } else {
         vector<Configuration> successors = getSuccessors(config);
         for (auto it : successors) {
             if (isValid(it)) {
-                Configuration* solution = solve(it);
+                Configuration* solution = solveHelper(it, path);
                 if (solution != NULL) {
+                    path->push_back(config.str());
                     return solution;
                 }
             }
