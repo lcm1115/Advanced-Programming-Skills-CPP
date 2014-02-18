@@ -1,29 +1,29 @@
 #include "circle.h"
 
 Circle::Circle() {
-    values.resize(3);
+    _values.resize(3);
 }
 
 void Circle::setValue(int index, int value) {
-    values.at(index) = value;
+    _values.at(index) = value;
 }
 
 int Circle::getValue(int index) const {
-    return values.at(index);
+    return _values.at(index);
 }
 
 int Circle::getSum() const {
-    return values[0] + values[1] + values[2];
+    return _values.at(0) + _values.at(1) + _values.at(2);
 }
 
 std::ostream& operator<<(std::ostream& os, const Circle& c) {
-    os << c.values[0] << "." << c.values[1] << "." << c.values[2];
+    os << c._values[0] << "." << c._values[1] << "." << c._values[2];
     return os;
 }
 
 bool Circle::operator==(const Circle& rhs) {
     for (int i = 0; i < 3; ++i) {
-        if (values[i] != rhs.values[i]) {
+        if (_values[i] != rhs._values[i]) {
             return false;
         }
     }

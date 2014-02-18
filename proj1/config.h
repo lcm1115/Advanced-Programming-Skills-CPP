@@ -9,23 +9,13 @@
 
 class Configuration {
     public:
+        bool isGoal() const;
+
+        bool isValid() const;
+
+        std::vector<Configuration> getSuccessors() const;
+
         Configuration(const std::vector<Circle>& c, const std::vector<int>& bv);
-
-        Circle* getCircle(int index);
-
-        const std::vector<Circle>& getCircles() const;
-
-        const std::set<int>& getAvailable() const ;
-
-        void removeAvailable(int val);
-
-        int getBridgeValue(int index) const;
-
-        const std::vector<int>& getBridgeValues() const;
-
-        int getPos() const;
-
-        void incPos();
 
         std::string str() const;
 
@@ -37,10 +27,10 @@ class Configuration {
                 std::ostream& os, const Configuration& c);
 
     private:
-        int pos;
-        std::vector<Circle> circles;
-        std::vector<int> bridgeValues;
-        std::set<int> available;
+        int _pos;
+        std::vector<Circle> _circles;
+        std::vector<int> _bridgeValues;
+        std::set<int> _available;
 };
 
 #endif  // CONFIG_H

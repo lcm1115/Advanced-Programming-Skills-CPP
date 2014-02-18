@@ -14,47 +14,60 @@ using std::set;
 using std::string;
 using std::vector;
 
-Configuration::Configuration(const vector<Circle>& c, const vector<int>& bv) {
-    circles = c;
-    bridgeValues = bv;
+Configuration::Configuration(
+        const vector<Circle>& circles, const vector<int>& bridgeValues) {
+    _circles = circles;
+    _bridgeValues = bridgeValues;
 
-    for (int i = 1; i <= 3 * c.size(); ++i) {
-        available.insert(i);
+    for (unsigned int i = 1; i <= 3 * circles.size(); ++i) {
+        _available.insert(i);
     }
 
-    pos = 0;
+    _pos = 0;
 }
 
-Circle* Configuration::getCircle(int index) {
-    return &(circles.at(index));
+bool Configuration::isGoal() const {
+    return _available.size() == 0;
 }
 
-const set<int>& Configuration::getAvailable() const {
-    return available;
+bool Configuration::isValid() const {
+    int circleIndex = _pos / 3;
+    int circlePos = _pos % 3;
+
+    if ((circlePos == 1 && _pos > 1) || circleIndex == _circles.size()) {
+        const Circle& c1 = _circles.at(circleIndex % _circles.size());
+        const Circle& c2 = _circles.at(circleIndex - 1);
+        if (c1.getValue(0) + c2.getValue(2) != _bridgeValues.at(circleIndex - 1)) {
+            return false;
+        }
+    }
+
+    if (circleIndex > 1 && circlePos == 0) {
+        const Circle& c1 = _circles.at(circleIndex - 1);
+        const Circle& c2 = _circles.at(circleIndex - 2);
+        if (c1.getSum() != c2.getSum()) {
+            return false;
+        }
+    }
+
+    return true;
 }
 
-void Configuration::removeAvailable(int val) {
-    available.erase(val);
-}
+vector<Configuration> Configuration::getSuccessors() const {
+    vector<Configuration> successors;
 
-const vector<Circle>& Configuration::getCircles() const {
-    return circles;
-}
+    int circle = _pos / 3;
+    int circleIndex = _pos % 3;
 
-int Configuration::getBridgeValue(int index) const {
-    return bridgeValues.at(index);
-}
+    for (auto val : _available) {
+        Configuration c(*this);
+        ++c._pos;
+        c._circles.at(circle).setValue(circleIndex, val);
+        c._available.erase(val);
+        successors.push_back(c);
+    }
 
-const vector<int>& Configuration::getBridgeValues() const {
-    return bridgeValues;
-}
-
-int Configuration::getPos() const {
-    return pos;
-}
-
-void Configuration::incPos() {
-    ++pos;
+    return successors;
 }
 
 string Configuration::str() const {
@@ -64,7 +77,7 @@ string Configuration::str() const {
 }
 
 bool Configuration::operator==(const Configuration& rhs) {
-    return equal(circles.begin(), circles.end(), rhs.circles.begin());
+    return equal(_circles.begin(), _circles.end(), rhs._circles.begin());
 }
 
 bool Configuration::operator!=(const Configuration& rhs) {
@@ -72,9 +85,9 @@ bool Configuration::operator!=(const Configuration& rhs) {
 }
 
 ostream& operator<<(ostream& os, const Configuration& c) {
-    for (int i = 0; i < c.circles.size(); ++i) {
-        os << c.circles.at(i);
-        if (i < c.circles.size() - 1) {
+    for (unsigned int i = 0; i < c._circles.size(); ++i) {
+        os << c._circles.at(i);
+        if (i < c._circles.size() - 1) {
             os << " - ";
         }
     }

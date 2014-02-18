@@ -11,16 +11,7 @@ class Backtrack {
     public:
         Backtrack(bool path);
 
-        bool isGoal(const Configuration& config);
-
-        bool isValid(const Configuration& config);
-
-        std::vector<Configuration> getSuccessors(const Configuration& config);
-
         Configuration* solve(const Configuration& config);
-        
-        Configuration* solveHelper(
-                const Configuration& config, std::vector<std::string>* path);
 
     private:
         bool path;

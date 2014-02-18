@@ -19,6 +19,6 @@ class Circle {
         bool operator==(const Circle& rhs);
 
     private:
-        std::vector<int> values;
+        std::vector<int> _values;
 };
 #endif  // CIRCLE_H
