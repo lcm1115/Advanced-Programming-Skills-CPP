@@ -25,7 +25,7 @@ Circle* Configuration::getCircle(int index) {
     return &(circles.at(index));
 }
 
-set<int> Configuration::getAvailable() {
+const set<int>& Configuration::getAvailable() const {
     return available;
 }
 
@@ -33,19 +33,19 @@ void Configuration::removeAvailable(int val) {
     available.erase(val);
 }
 
-const vector<Circle>& Configuration::getCircles() {
+const vector<Circle>& Configuration::getCircles() const {
     return circles;
 }
 
-int Configuration::getBridgeValue(int index) {
+int Configuration::getBridgeValue(int index) const {
     return bridgeValues.at(index);
 }
 
-const vector<int>& Configuration::getBridgeValues() {
+const vector<int>& Configuration::getBridgeValues() const {
     return bridgeValues;
 }
 
-int Configuration::getPos() {
+int Configuration::getPos() const {
     return pos;
 }
 

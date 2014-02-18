@@ -4,8 +4,6 @@
 #include <iostream>
 #include <vector>
 
-using std::vector;
-
 class Circle {
     public:
         Circle();
@@ -21,6 +19,6 @@ class Circle {
         bool operator==(const Circle& rhs);
 
     private:
-        vector<int> values;
+        std::vector<int> values;
 };
 #endif  // CIRCLE_H

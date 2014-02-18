@@ -8,11 +8,15 @@
 
 using namespace std;
 
-bool Backtrack::isGoal(Configuration config) {
+Backtrack::Backtrack(bool p) {
+    path = p;
+}
+
+bool Backtrack::isGoal(const Configuration& config) {
     return config.getAvailable().size() == 0;
 }
 
-bool Backtrack::isValid(Configuration config) {
+bool Backtrack::isValid(const Configuration& config) {
     const vector<Circle>& circles = config.getCircles();
     const vector<int>& bridgeValues = config.getBridgeValues();
 
@@ -39,23 +43,23 @@ bool Backtrack::isValid(Configuration config) {
     return true;
 }
 
-vector<Configuration> Backtrack::getSuccessors(Configuration config) {
+vector<Configuration> Backtrack::getSuccessors(const Configuration& config) {
     vector<Configuration> successors;
 
     int circle = config.getPos() / 3;
     int circleIndex = config.getPos() % 3;
-    config.incPos();
     for (auto val : config.getAvailable()) {
         Configuration c(config);
         c.getCircle(circle)->setValue(circleIndex, val);
         c.removeAvailable(val);
+        c.incPos();
         successors.push_back(c);
     }
 
     return successors;
 }
 
-Configuration* Backtrack::solve(Configuration config) {
+Configuration* Backtrack::solve(const Configuration& config) {
     if (isGoal(config)) {
         return new Configuration(config);
     } else {

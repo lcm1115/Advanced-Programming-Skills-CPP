@@ -12,17 +12,17 @@ class Configuration {
 
         Circle* getCircle(int index);
 
-        const std::vector<Circle>& getCircles();
+        const std::vector<Circle>& getCircles() const;
 
-        std::set<int> getAvailable();
+        const std::set<int>& getAvailable() const ;
 
         void removeAvailable(int val);
 
-        int getBridgeValue(int index);
+        int getBridgeValue(int index) const;
 
-        const std::vector<int>& getBridgeValues();
+        const std::vector<int>& getBridgeValues() const;
 
-        int getPos();
+        int getPos() const;
 
         void incPos();
 

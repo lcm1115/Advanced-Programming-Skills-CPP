@@ -28,14 +28,12 @@ int main(int argc, char** argv) {
     }
 
     Configuration c(circles, bridgeValues);
-    Backtrack b;
+    Backtrack b(true);
     Configuration* solution = b.solve(c);
     if (solution) {
         cout << *(solution) << endl;
-    cout << solution->getPos() << endl;
         delete solution;
     } else {
         cout << "No solution!" << endl;
     }
-
 }

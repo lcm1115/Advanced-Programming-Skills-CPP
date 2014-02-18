@@ -6,13 +6,18 @@
 
 class Backtrack {
     public:
-        bool isGoal(Configuration config);
+        Backtrack(bool path);
 
-        bool isValid(Configuration config);
+        bool isGoal(const Configuration& config);
 
-        vector<Configuration> getSuccessors(Configuration config);
+        bool isValid(const Configuration& config);
 
-        Configuration* solve(Configuration config);
+        std::vector<Configuration> getSuccessors(const Configuration& config);
+
+        Configuration* solve(const Configuration& config);
+
+    private:
+        bool path;
 };
 
 #endif  // BACKTRACK_H
