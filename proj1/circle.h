@@ -1,7 +1,7 @@
 #ifndef CIRCLE_H
 #define CIRCLE_H
 
-#include <iostream>
+#include <ostream>
 #include <vector>
 
 class Circle {

@@ -19,10 +19,6 @@ class Configuration {
 
         std::string str() const;
 
-        bool operator==(const Configuration& rhs);
-
-        bool operator!=(const Configuration& rhs);
-
         friend std::ostream& operator<<(
                 std::ostream& os, const Configuration& c);
 

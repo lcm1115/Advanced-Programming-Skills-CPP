@@ -1,17 +1,12 @@
 #include "config.h"
 
-#include <algorithm>
-#include <iostream>
 #include <ostream>
-#include <set>
 #include <string>
 #include <sstream>
 #include <vector>
 
-using std::equal;
 using std::ostream;
 using std::ostringstream;
-using std::set;
 using std::string;
 using std::vector;
 
@@ -37,13 +32,15 @@ bool Configuration::isGoal() const {
 }
 
 bool Configuration::isValid() const {
-    int circleIndex = _pos / 3;
-    int circlePos = _pos % 3;
+    unsigned int circleIndex = _pos / 3;
+    unsigned int circlePos = _pos % 3;
 
     if ((circlePos == 1 && _pos > 1) || circleIndex == _circles.size()) {
         const Circle& c1 = _circles.at(circleIndex % _circles.size());
         const Circle& c2 = _circles.at(circleIndex - 1);
-        if (c1.getValue(0) + c2.getValue(2) != _bridgeValues.at(circleIndex - 1)) {
+        int bridgeValue = c1.getValue(0) + c2.getValue(2);
+        
+        if (bridgeValue != _bridgeValues.at(circleIndex - 1)) {
             return false;
         }
     }
@@ -79,14 +76,6 @@ string Configuration::str() const {
     ostringstream oss;
     oss << *this;
     return oss.str();
-}
-
-bool Configuration::operator==(const Configuration& rhs) {
-    return equal(_circles.begin(), _circles.end(), rhs._circles.begin());
-}
-
-bool Configuration::operator!=(const Configuration& rhs) {
-    return !(*this == rhs);
 }
 
 ostream& operator<<(ostream& os, const Configuration& c) {
