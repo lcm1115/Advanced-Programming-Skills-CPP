@@ -1,6 +1,6 @@
 #include "backtrack.h"
-#include "circle.h"
-#include "config.h"
+#include "triad.h"
+#include "wheelconfig.h"
 
 #include <cstring>
 #include <iostream>
@@ -18,25 +18,24 @@ int main(int argc, char** argv) {
         }
     }
 
-    int numCircles;
-    cin >> numCircles;
-    vector<int> bridgeValues(numCircles);
-    vector<Circle> circles(numCircles);
+    int numTriads;
+    cin >> numTriads;
+    vector<int> bridgeValues(numTriads);
+    vector<Triad> triads(numTriads);
 
-    for (int i = 0; i < numCircles; ++i) {
+    for (int i = 0; i < numTriads; ++i) {
         cin >> bridgeValues.at(i);
     }
 
-    Configuration c(circles, bridgeValues);
-    Backtrack<Configuration> b(path);
-    Configuration* solution = b.solve(c);
-    if (solution) {
+    WheelConfig c(triads, bridgeValues);
+    Backtrack<WheelConfig> b(path);
+    WheelConfig solution = b.solve(c);
+    if (!solution.isFailure()) {
         if (path) {
             b.printPath();
         }
 
-        cout << *(solution) << endl;
-        delete solution;
+        cout << solution << endl;
     } else {
         cout << "No solution!" << endl;
     }

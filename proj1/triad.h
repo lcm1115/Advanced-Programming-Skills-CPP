@@ -1,12 +1,12 @@
-#ifndef CIRCLE_H
-#define CIRCLE_H
+#ifndef TRIAD_H
+#define TRIAD_H
 
 #include <ostream>
 #include <vector>
 
-class Circle {
+class Triad {
     public:
-        Circle();
+        Triad();
 
         void setValue(int index, int value);
 
@@ -14,11 +14,11 @@ class Circle {
 
         int getSum() const;
 
-        friend std::ostream& operator<<(std::ostream& os, const Circle& c);
+        friend std::ostream& operator<<(std::ostream& os, const Triad& c);
 
-        bool operator==(const Circle& rhs);
+        bool operator==(const Triad& rhs);
 
     private:
         std::vector<int> _values;
 };
-#endif  // CIRCLE_H
+#endif  // TRIAD_H

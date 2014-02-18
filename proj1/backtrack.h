@@ -1,9 +1,6 @@
 #ifndef BACKTRACK_H
 #define BACKTRACK_H
 
-#include "circle.h"
-#include "config.h"
-
 #include <string>
 #include <vector>
 
@@ -12,7 +9,7 @@ class Backtrack {
     public:
         Backtrack(bool path);
 
-        T* solve(const T& config);
+        T solve(T& config);
 
         void printPath();
 

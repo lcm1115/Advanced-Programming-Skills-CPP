@@ -1,5 +1,7 @@
 #include "backtrack.h"
 
+#include "wheelconfig.h"
+
 #include <iostream>
 #include <vector>
 
@@ -13,15 +15,15 @@ Backtrack<T>::Backtrack(bool path) {
 }
 
 template <class T>
-T* Backtrack<T>::solve(const T& config) {
+T Backtrack<T>::solve(T& config) {
     if (config.isGoal()) {
-        return new T(config);
+        return config;
     } else {
         std::vector<T> successors = config.getSuccessors();
         for (auto it : successors) {
             if (it.isValid()) {
-                T* solution = solve(it);
-                if (solution != NULL) {
+                const T& solution = solve(it);
+                if (!solution.isFailure()) {
                     if (_path) {
                         _configPath.push_back(config.str());
                     }
@@ -30,7 +32,7 @@ T* Backtrack<T>::solve(const T& config) {
             }
         }
 
-        return NULL;
+        return T::FAIL;
     }
 }
 
@@ -41,4 +43,5 @@ void Backtrack<T>::printPath() {
     }
 }
 
-template class Backtrack<Configuration>;
+template class Backtrack<WheelConfig>;
+WheelConfig WheelConfig::FAIL(true);

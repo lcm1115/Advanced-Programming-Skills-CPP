@@ -1,27 +1,27 @@
-#include "circle.h"
+#include "triad.h"
 
-Circle::Circle() {
+Triad::Triad() {
     _values.resize(3);
 }
 
-void Circle::setValue(int index, int value) {
+void Triad::setValue(int index, int value) {
     _values.at(index) = value;
 }
 
-int Circle::getValue(int index) const {
+int Triad::getValue(int index) const {
     return _values.at(index);
 }
 
-int Circle::getSum() const {
+int Triad::getSum() const {
     return _values.at(0) + _values.at(1) + _values.at(2);
 }
 
-std::ostream& operator<<(std::ostream& os, const Circle& c) {
+std::ostream& operator<<(std::ostream& os, const Triad& c) {
     os << c._values[0] << "." << c._values[1] << "." << c._values[2];
     return os;
 }
 
-bool Circle::operator==(const Circle& rhs) {
+bool Triad::operator==(const Triad& rhs) {
     for (int i = 0; i < 3; ++i) {
         if (_values[i] != rhs._values[i]) {
             return false;
