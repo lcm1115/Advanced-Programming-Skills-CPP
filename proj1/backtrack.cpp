@@ -14,34 +14,24 @@ bool Backtrack::isGoal(Configuration config) {
 
 bool Backtrack::isValid(Configuration config) {
     const vector<Circle>& circles = config.getCircles();
+    const vector<int>& bridgeValues = config.getBridgeValues();
 
-    for (int i = 0; i < circles.size(); ++i) {
-        int j = (i + 1) % circles.size();
-        const Circle& c1 = circles.at(i);
-        const Circle& c2 = circles.at(j);
+    int pos = config.getPos();
+    int circleIndex = pos / 3;
+    int circlePos = pos % 3;
 
-        if (c1.getValue(2) == 0 || c2.getValue(0) == 0) {
-            continue;
+    if ((circlePos == 1 && pos > 1) || circleIndex == circles.size()) {
+        const Circle& c1 = circles.at(circleIndex % circles.size());
+        const Circle& c2 = circles.at(circleIndex - 1);
+        if (c1.getValue(0) + c2.getValue(2) != bridgeValues.at(circleIndex - 1)) {
+            return false;
         }
+    }
 
-        bool complete = true;
-
-        for (int ind = 0; ind < 3; ++ind) {
-            if (c1.getValue(ind) == 0 || c2.getValue(ind) == 0) {
-                complete = false;
-                break;
-            }
-        }
-
-        if (complete) {
-            if (c1.getSum() != c2.getSum()) {
-                return false;
-            }
-        }
-
-        int bridgeVal = c1.getValue(2) + c2.getValue(0);
-
-        if (bridgeVal != config.getBridgeValue(i)) {
+    if (circleIndex > 1 && circlePos == 0) {
+        const Circle& c1 = circles.at(circleIndex - 1);
+        const Circle& c2 = circles.at(circleIndex - 2);
+        if (c1.getSum() != c2.getSum()) {
             return false;
         }
     }

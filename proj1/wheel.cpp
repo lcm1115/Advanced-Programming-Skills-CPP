@@ -32,8 +32,10 @@ int main(int argc, char** argv) {
     Configuration* solution = b.solve(c);
     if (solution) {
         cout << *(solution) << endl;
+    cout << solution->getPos() << endl;
         delete solution;
     } else {
         cout << "No solution!" << endl;
     }
+
 }
