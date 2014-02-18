@@ -7,11 +7,12 @@
 #include <string>
 #include <vector>
 
+template <class T>
 class Backtrack {
     public:
         Backtrack(bool path);
 
-        Configuration* solve(const Configuration& config);
+        T* solve(const T& config);
 
     private:
         bool path;

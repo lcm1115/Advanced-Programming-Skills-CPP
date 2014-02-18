@@ -2,24 +2,22 @@
 
 #include "config.h"
 
-#include <algorithm>
-#include <set>
 #include <vector>
 
-using namespace std;
-
-Backtrack::Backtrack(bool p) {
+template <class T>
+Backtrack<T>::Backtrack(bool p) {
     path = p;
 }
 
-Configuration* Backtrack::solve(const Configuration& config) {
+template <class T>
+T* Backtrack<T>::solve(const T& config) {
     if (config.isGoal()) {
-        return new Configuration(config);
+        return new T(config);
     } else {
-        vector<Configuration> successors = config.getSuccessors();
+        std::vector<T> successors = config.getSuccessors();
         for (auto it : successors) {
             if (it.isValid()) {
-                Configuration* solution = solve(it);
+                T* solution = solve(it);
                 if (solution != NULL) {
                     return solution;
                 }
@@ -29,3 +27,5 @@ Configuration* Backtrack::solve(const Configuration& config) {
         return NULL;
     }
 }
+
+template class Backtrack<Configuration>;
