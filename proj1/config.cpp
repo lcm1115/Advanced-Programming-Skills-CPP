@@ -12,23 +12,32 @@ using std::vector;
 
 Configuration::Configuration(
         const vector<Circle>& circles, const vector<int>& bridgeValues) {
-    _circles = circles;
-    _bridgeValues = bridgeValues;
+    if (circles.size() % 2 == 0) {
+        _sum = -1;
+        _available.clear();
+    } else {
+        _circles = circles;
+        _bridgeValues = bridgeValues;
 
-    _sum = 0;
+        _sum = 0;
+        int bridgeSum = 0;
+        for (auto it : bridgeValues) {
+            bridgeSum += it;
+        }
 
-    for (unsigned int i = 1; i <= 3 * circles.size(); ++i) {
-        _sum += i;
-        _available.insert(i);
+        for (unsigned int i = 1; i <= 3 * circles.size(); ++i) {
+            _sum += i;
+            _available.insert(i);
+        }
+
+        _sum /= circles.size();
+
+        _pos = 0;
     }
-
-    _sum /= circles.size();
-
-    _pos = 0;
 }
 
 bool Configuration::isGoal() const {
-    return _available.size() == 0;
+    return _available.size() == 0 && _sum != -1;
 }
 
 bool Configuration::isValid() const {
