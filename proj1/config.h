@@ -28,6 +28,7 @@ class Configuration {
 
     private:
         int _pos;
+        int _sum;
         std::vector<Circle> _circles;
         std::vector<int> _bridgeValues;
         std::set<int> _available;

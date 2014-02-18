@@ -1,6 +1,7 @@
 #include "config.h"
 
 #include <algorithm>
+#include <iostream>
 #include <ostream>
 #include <set>
 #include <string>
@@ -19,9 +20,14 @@ Configuration::Configuration(
     _circles = circles;
     _bridgeValues = bridgeValues;
 
+    _sum = 0;
+
     for (unsigned int i = 1; i <= 3 * circles.size(); ++i) {
+        _sum += i;
         _available.insert(i);
     }
+
+    _sum /= circles.size();
 
     _pos = 0;
 }
@@ -42,10 +48,9 @@ bool Configuration::isValid() const {
         }
     }
 
-    if (circleIndex > 1 && circlePos == 0) {
+    if (circlePos == 0 && circleIndex > 0) {
         const Circle& c1 = _circles.at(circleIndex - 1);
-        const Circle& c2 = _circles.at(circleIndex - 2);
-        if (c1.getSum() != c2.getSum()) {
+        if (c1.getSum() != _sum) {
             return false;
         }
     }
