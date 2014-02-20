@@ -64,7 +64,7 @@ class WheelConfig {
         bool _failure;
 
         // Current index in triads
-        int _pos;
+        unsigned int _pos;
 
         // Sum that triads must adhere to
         int _sum;

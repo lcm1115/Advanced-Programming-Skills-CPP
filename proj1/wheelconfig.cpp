@@ -3,6 +3,9 @@
 
 #include "wheelconfig.h"
 
+#include <iostream>
+using namespace std;
+
 #include <ostream>
 #include <string>
 #include <sstream>
@@ -29,9 +32,23 @@ WheelConfig::WheelConfig(
             _available.insert(i);
         }
 
+        // Erase values that are already inside circles
+        for (auto t : triads) {
+            for (int i = 0; i < 3; ++i) {
+                if (t.getValue(i) != 0) {
+                    _available.erase(t.getValue(i));
+                }
+            }
+        }
+
         _sum /= triads.size();
 
         _pos = 0;
+
+        while (_pos < triads.size() * 3 &&
+               triads.at(_pos / 3).getValue(_pos % 3) != 0) {
+            ++_pos;
+        }
     }
 }
 
@@ -86,6 +103,13 @@ vector<WheelConfig> WheelConfig::getSuccessors() const {
         ++config._pos;
         config._triads.at(triad).setValue(triadIndex, val);
         config._available.erase(val);
+
+        // Move past completed values
+        while (config._pos < _triads.size() * 3 &&
+               config._triads.at(config._pos / 3).getValue(config._pos % 3) != 0) {
+            ++config._pos;
+        }
+
         successors.push_back(config);
     }
 

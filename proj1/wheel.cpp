@@ -8,6 +8,8 @@
 
 #include <cstring>
 #include <iostream>
+#include <map>
+#include <set>
 
 using namespace std;
 
@@ -31,6 +33,13 @@ int main(int argc, char** argv) {
 
     for (int i = 0; i < numTriads; ++i) {
         cin >> bridgeValues.at(i);
+    }
+
+    // Read in constraining values
+    int triad, value;
+    while (cin >> triad) {
+        cin >> value;
+        triads.at(triad / 3).setValue(triad % 3, value);
     }
 
     // Create config and solve
