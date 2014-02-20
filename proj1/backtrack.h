@@ -12,6 +12,15 @@
 template <class T>
 class Backtrack {
     public:
+        Backtrack(const T& config);
+
+        // Clears _configPath and attempts to find a solution to the puzzle.
+        T solve();
+
+        // Prints the path that led to a solution.
+        void printPath();
+
+    private:
         // Finds a solution (if it exists) to a given puzzle configuration.
         // Input:
         //   T config - the current puzzle configuration
@@ -19,10 +28,7 @@ class Backtrack {
         //   T - The solved puzzle if a solution exists, else T::FAIL
         T solve(const T& config);
 
-        // Prints the path that led to a solution.
-        void printPath();
-
-    private:
+        T _puzzle;
         std::vector<std::string> _configPath;
 };
 

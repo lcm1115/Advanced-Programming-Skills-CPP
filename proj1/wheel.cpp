@@ -48,8 +48,8 @@ int main(int argc, char** argv) {
 
     // Create config and solve
     WheelConfig c(triads, bridgeValues);
-    Backtrack<WheelConfig> b;
-    WheelConfig solution = b.solve(c);
+    Backtrack<WheelConfig> b(c);
+    WheelConfig solution = b.solve();
     if (!solution.isFailure()) {
         if (path) {
             b.printPath();

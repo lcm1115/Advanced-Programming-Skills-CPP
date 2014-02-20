@@ -12,6 +12,15 @@ using std::cout;
 using std::endl;
 using std::vector;
 
+template<class T>
+Backtrack<T>::Backtrack(const T& config) : _puzzle(config) { }
+
+template<class T>
+T Backtrack<T>::solve() {
+    _configPath.clear();
+    return solve(_puzzle);
+}
+
 template <class T>
 T Backtrack<T>::solve(const T& config) {
     // Check if puzzle is solved
