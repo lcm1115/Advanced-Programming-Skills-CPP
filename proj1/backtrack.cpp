@@ -1,3 +1,6 @@
+// File: backtrack.h
+// Author: Liam Morris
+
 #include "backtrack.h"
 
 #include "wheelconfig.h"
@@ -10,23 +13,20 @@ using std::endl;
 using std::vector;
 
 template <class T>
-Backtrack<T>::Backtrack(bool path) {
-    _path = path;
-}
-
-template <class T>
-T Backtrack<T>::solve(T& config) {
+T Backtrack<T>::solve(const T& config) {
+    // Check if puzzle is solved
     if (config.isGoal()) {
         return config;
     } else {
+        // Get all successors and recursively call solve
         std::vector<T> successors = config.getSuccessors();
         for (auto it : successors) {
             if (it.isValid()) {
                 const T& solution = solve(it);
+
+                // If solution is found, return it
                 if (!solution.isFailure()) {
-                    if (_path) {
-                        _configPath.push_back(config.str());
-                    }
+                    _configPath.push_back(config.str());
                     return solution;
                 }
             }
@@ -43,5 +43,6 @@ void Backtrack<T>::printPath() {
     }
 }
 
+// Template initializations.
 template class Backtrack<WheelConfig>;
 WheelConfig WheelConfig::FAIL(true);

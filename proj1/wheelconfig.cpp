@@ -1,3 +1,6 @@
+// File: wheelconfig.cpp
+// Author: Liam Morris
+
 #include "wheelconfig.h"
 
 #include <ostream>
@@ -12,9 +15,9 @@ using std::vector;
 
 WheelConfig::WheelConfig(
         const vector<Triad>& triads, const vector<int>& bridgeValues) {
+    // Puzzle is impossible for even number of triads, so cause early fail
     if (triads.size() % 2 == 0) {
         _sum = -1;
-        _available.clear();
     } else {
         _triads = triads;
         _bridgeValues = bridgeValues;
@@ -48,6 +51,8 @@ bool WheelConfig::isValid() const {
     unsigned int triadIndex = _pos / 3;
     unsigned int triadPos = _pos % 3;
 
+    // If a bridge was just completed, make sure it is the bridge value we are
+    // currently concerned with
     if ((triadPos == 1 && _pos > 1) || triadIndex == _triads.size()) {
         const Triad& t1 = _triads.at(triadIndex % _triads.size());
         const Triad& t2 = _triads.at(triadIndex - 1);
@@ -58,6 +63,7 @@ bool WheelConfig::isValid() const {
         }
     }
 
+    // If a triad was completed, verify that it has a proper sum
     if (triadPos == 0 && triadIndex > 0) {
         const Triad& t1 = _triads.at(triadIndex - 1);
         if (t1.getSum() != _sum) {
@@ -74,6 +80,7 @@ vector<WheelConfig> WheelConfig::getSuccessors() const {
     int triad = _pos / 3;
     int triadIndex = _pos % 3;
 
+    // Attempt to fill current position with each available value
     for (auto val : _available) {
         WheelConfig config(*this);
         ++config._pos;

@@ -1,3 +1,6 @@
+// File: triad.cpp
+// Author: Liam Morris
+
 #include "triad.h"
 
 Triad::Triad() {
@@ -13,6 +16,7 @@ int Triad::getValue(int index) const {
 }
 
 int Triad::getSum() const {
+    // Compute and return sum
     return _values.at(0) + _values.at(1) + _values.at(2);
 }
 

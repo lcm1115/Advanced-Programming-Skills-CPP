@@ -1,3 +1,7 @@
+// File: wheel.cpp
+// Author: Liam Morris
+// Description: Main program for solving wheel puzzle.
+
 #include "backtrack.h"
 #include "triad.h"
 #include "wheelconfig.h"
@@ -8,6 +12,7 @@
 using namespace std;
 
 int main(int argc, char** argv) {
+    // Determine if path matters
     bool path = false;
     if (argc > 1) {
         if (strcmp(argv[1], "path") == 0) {
@@ -18,6 +23,7 @@ int main(int argc, char** argv) {
         }
     }
 
+    // Read input
     int numTriads;
     cin >> numTriads;
     vector<int> bridgeValues(numTriads);
@@ -27,8 +33,9 @@ int main(int argc, char** argv) {
         cin >> bridgeValues.at(i);
     }
 
+    // Create config and solve
     WheelConfig c(triads, bridgeValues);
-    Backtrack<WheelConfig> b(path);
+    Backtrack<WheelConfig> b;
     WheelConfig solution = b.solve(c);
     if (!solution.isFailure()) {
         if (path) {
