@@ -3,9 +3,6 @@
 
 #include "wheelconfig.h"
 
-#include <iostream>
-using namespace std;
-
 #include <ostream>
 #include <string>
 #include <sstream>

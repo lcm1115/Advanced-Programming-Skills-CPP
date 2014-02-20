@@ -11,7 +11,11 @@
 #include <map>
 #include <set>
 
-using namespace std;
+using std::cerr;
+using std::cin;
+using std::cout;
+using std::endl;
+using std::vector;
 
 int main(int argc, char** argv) {
     // Determine if path matters
