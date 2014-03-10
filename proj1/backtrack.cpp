@@ -54,4 +54,4 @@ void Backtrack<T>::printPath() {
 
 // Template initializations.
 template class Backtrack<WheelConfig>;
-WheelConfig WheelConfig::FAIL(true);
+const WheelConfig WheelConfig::FAIL(true);

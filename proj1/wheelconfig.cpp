@@ -47,6 +47,8 @@ WheelConfig::WheelConfig(
             ++_pos;
         }
     }
+
+    _failure = false;
 }
 
 WheelConfig::WheelConfig(bool failure) {

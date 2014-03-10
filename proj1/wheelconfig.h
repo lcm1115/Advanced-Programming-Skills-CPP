@@ -57,7 +57,7 @@ class WheelConfig {
         friend std::ostream& operator<<(
                 std::ostream& os, const WheelConfig& config);
 
-        static WheelConfig FAIL;
+        static const WheelConfig FAIL;
 
     private:
         // Failure status
