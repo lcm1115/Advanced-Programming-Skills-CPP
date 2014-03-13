@@ -5,34 +5,19 @@
 #include <algorithm>
 #include <chrono>
 #include <cstring>
-#include <deque>
+#include <vector>
 #include <fstream>
 #include <iostream>
 #include <map>
 #include <set>
 #include <sstream>
 #include <string>
-#include <vector>
 
 using namespace std;
 using std::chrono::system_clock;
 
 void Places::insertPlace(Place* place) {
-    const string& country = place->getCountry();
-    const string& region = place->getRegion();
-    const string& city = place->getCity();
     if (!dupLocation(place)) {
-        if (_placeMap.find(country) == _placeMap.end()) {
-            _placeMap[country] = map<string, map<string, Place*>>();
-        }
-
-        map<string, map<string, Place*>>& regionMap = _placeMap.at(country);
-        if (regionMap.find(region) == regionMap.end()) {
-            regionMap[region] = map<string, Place*>();
-        }
-
-        map<string, Place*>& cityMap = regionMap.at(region);
-        cityMap.insert(pair<string, Place*>(city, place));
         _coords.insert(pair<double, double>(place->getLatitude(),
                                            place->getLongitude()));
         _places.push_back(place);
@@ -43,16 +28,14 @@ void Places::insertPlace(Place* place) {
 
 const Place* Places::getPlace(
         string country, string region, string city) const {
-    if (_placeMap.find(country) != _placeMap.end()) {
-        const map<string, map<string, Place*>>& regionMap = _placeMap.at(country);
-        if (regionMap.find(region) != regionMap.end()) {
-            const map<string, Place*>& cityMap = regionMap.at(region);
-            if (cityMap.find(city) != cityMap.end()) {
-                return cityMap.at(city);
-            }
+    for (auto it : _places) {
+        if (it->getCountry() == country &&
+            it->getRegion() == region &&
+            it->getCity() == city) {
+            return it;
         }
     }
-    
+
     return NULL;
 }
 
@@ -85,16 +68,16 @@ const Place* Places::readPlace() const {
     return getPlace(country, region, city);
 }
 
-pair<Place*, Place*> Places::closestPairBF(const deque<Place*>* points) const {
+pair<Place*, Place*> Places::closestPairBF(const vector<Place*>& points) const {
     double dist = INFINITY;
     pair<Place*, Place*> p;
-    for (unsigned int i = 0; i < points->size(); ++i) {
-        for (unsigned int j = i + 1; j < points->size(); ++j) {
-            double d = points->at(i)->dist(points->at(j));
+    for (unsigned int i = 0; i < points.size(); ++i) {
+        for (unsigned int j = i + 1; j < points.size(); ++j) {
+            double d = points.at(i)->dist(points.at(j));
             if (d < dist) {
                 dist = d;
-                p.first = points->at(i);
-                p.second = points->at(j);
+                p.first = points.at(i);
+                p.second = points.at(j);
             }
         }
     }
@@ -103,79 +86,48 @@ pair<Place*, Place*> Places::closestPairBF(const deque<Place*>* points) const {
 }
 
 pair<Place*, Place*> Places::closestPair() {
-    deque<Place*> pointsX, pointsY;
-
-    for (auto it : _places) {
-        pointsX.push_back(it);
-        pointsY.push_back(it);
-    }
-    
-    sort(pointsX.begin(),
-         pointsX.end(),
-         [](const Place* p1, const Place* p2) {
-            return p1->getLongitude() < p2->getLongitude();
-         });
-    
-    sort(pointsY.begin(),
-         pointsY.end(),
+    sort(_places.begin(),
+         _places.end(),
          [](const Place* p1, const Place* p2) {
             return p1->getLongitude() < p2->getLongitude();
          });
 
-    return closestPair(&pointsX, &pointsY);
+    return closestPair(_places);
 }
 
-pair<Place*, Place*> Places::closestPair(
-        deque<Place*>* pointsX, deque<Place*>* pointsY) {
-
-    if (pointsX->size() <= 3) {
-        return closestPairBF(pointsX);
+pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
+    if (places.size() <= 3) {
+        return closestPairBF(places);
     }
 
-    unsigned int numPoints = pointsX->size() / 2;
+    unsigned int numPoints = places.size() / 2;
 
-    double median = pointsX->at(numPoints)->getLongitude();
+    double median = places.at(numPoints)->getLongitude();
     pair<Place*, Place*> p;
-    deque<Place*> leftX, leftY, rightX, rightY;
+    vector<Place*> left, right;
 
-    for (auto it : *pointsX) {
+    for (auto it : places) {
         if (it->getLongitude() < median) {
-            leftX.push_back(it);
+            left.push_back(it);
         } else {
-            rightX.push_back(it);
+            right.push_back(it);
         }
     }
 
-    for (auto it : *pointsY) {
-        if (it->getLongitude() < median) {
-            leftY.push_back(it);
-        } else {
-            rightY.push_back(it);
-        }
+    while (left.size() < 2) {
+        Place* p = right.front();
+        right.erase(right.begin());
+        left.push_back(p);
     }
 
-    while (leftX.size() < 2) {
-        Place* pX = rightX.front();
-        rightX.pop_front();
-        leftX.push_back(pX);
-
-        Place* pY = rightY.front();
-        rightY.pop_front();
-        leftY.push_back(pY);
+    while (right.size() < 2) {
+        Place* p = left.back();
+        left.pop_back();
+        right.insert(right.begin(), p);
     }
 
-    while (rightX.size() < 2) {
-        Place* pX = leftX.back();
-        leftX.pop_back();
-        rightX.push_front(pX);
-
-        Place* pY = leftY.back();
-        leftY.pop_back();
-        rightY.push_front(pY);
-    }
-
-    pair<Place*, Place*> leftClosest = closestPair(&leftX, &leftY);
-    pair<Place*, Place*> rightClosest = closestPair(&rightX, &rightY);
+    pair<Place*, Place*> leftClosest = closestPair(left);
+    pair<Place*, Place*> rightClosest = closestPair(right);
     double ldist = leftClosest.first->dist(leftClosest.second);
     double rdist = rightClosest.first->dist(rightClosest.second);
     
@@ -188,13 +140,18 @@ pair<Place*, Place*> Places::closestPair(
         minDist = rdist;
     }
 
-    deque<Place*> closeY;
-
-    for (auto it : *pointsY) {
+    vector<Place*> closeY;
+    for (auto it : places) {
         if (abs(it->getLongitude() - median) < minDist) {
             closeY.push_back(it);
         }
     }
+
+    sort(closeY.begin(),
+         closeY.end(),
+         [](const Place* p1, const Place* p2) {
+            return p1->getLatitude() < p2->getLatitude();
+         });
 
     if (closeY.size() > 1) {
         for (unsigned int i = 0; i < closeY.size() - 1; ++i) {
@@ -213,7 +170,6 @@ pair<Place*, Place*> Places::closestPair(
 }
 
 void Places::deletePlaces() {
-    _placeMap.clear();
     _coords.clear();
     while (!_places.empty()) {
         Place* p = _places.back();

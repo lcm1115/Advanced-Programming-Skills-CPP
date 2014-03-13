@@ -3,7 +3,6 @@
 
 #include "place.h"
 
-#include <deque>
 #include <map>
 #include <set>
 #include <string>
@@ -28,20 +27,15 @@ class Places {
         const Place* readPlace() const;
         
         std::pair<Place*, Place*> closestPairBF(
-                const std::deque<Place*>* points) const;
+                const std::vector<Place*>& points) const;
 
         std::pair<Place*, Place*> closestPair();
 
-        std::pair<Place*, Place*> closestPair(
-                std::deque<Place*>* pointsX, std::deque<Place*>* pointsY);
+        std::pair<Place*, Place*> closestPair(const std::vector<Place*>& places);
 
         void deletePlaces();
 
     private:
-        std::map<std::string,
-                 std::map<std::string,
-                          std::map<std::string, Place*>>> _placeMap;
-
         std::vector<Place*> _places;
 
         std::set<std::pair<double, double>> _coords;
