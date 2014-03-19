@@ -1,3 +1,7 @@
+// File: place.cpp
+// Author: Liam Morris
+// Description: Implements functions outlined in place.h.
+
 #include "place.h"
 
 #include <cmath>
@@ -13,13 +17,16 @@ using std::vector;
 const double TO_RADIANS = M_PI / 180;
 const double EARTH_RADIUS = 3961;
 
-Place::Place(const vector<string>& data) {
-    _country = data.at(0);
-    _city = data.at(1);
-    _region = data.at(3);
-    _latitude = atof(data.at(5).c_str());
-    _longitude = atof(data.at(6).c_str());
-}
+Place::Place(const string& country,
+             const string& region,
+             const string& city,
+             const string& latitude,
+             const string& longitude)
+    : _country(country),
+      _region(region),
+      _city(city),
+      _latitude(atof(latitude.c_str())),
+      _longitude(atof(longitude.c_str())) { }
 
 double Place::dist(const Place* other) const {
     double dlon = (other->_longitude - _longitude) * TO_RADIANS;
@@ -51,10 +58,6 @@ const Place* Place::closest(const vector<Place*>& places) const {
     }
 
     return places.at(index);
-}
-
-bool Place::operator<(const Place& other) const {
-    return _latitude < other._latitude;
 }
 
 const string& Place::getCountry() const {

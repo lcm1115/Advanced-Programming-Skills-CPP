@@ -1,6 +1,9 @@
+// File: places.cpp
+// Author: Liam Morris
+// Description: Main program for closest pair.
+
 #include "place.h"
 #include "places.h"
-#include "util.h"
 
 #include <algorithm>
 #include <chrono>
@@ -19,7 +22,7 @@ using std::chrono::system_clock;
 void Places::insertPlace(Place* place) {
     if (!dupLocation(place)) {
         _coords.insert(pair<double, double>(place->getLatitude(),
-                                           place->getLongitude()));
+                                            place->getLongitude()));
         _places.push_back(place);
     } else {
         delete place;
@@ -86,6 +89,7 @@ pair<Place*, Place*> Places::closestPairBF(const vector<Place*>& points) const {
 }
 
 pair<Place*, Place*> Places::closestPair() {
+    // Sort by X
     sort(_places.begin(),
          _places.end(),
          [](const Place* p1, const Place* p2) {
@@ -96,6 +100,7 @@ pair<Place*, Place*> Places::closestPair() {
 }
 
 pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
+    // If input list is small enough, run brute force closest pair
     if (places.size() <= 3) {
         return closestPairBF(places);
     }
@@ -106,6 +111,7 @@ pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
     pair<Place*, Place*> p;
     vector<Place*> left, right;
 
+    // Split list into two lists based on median value
     for (auto it : places) {
         if (it->getLongitude() < median) {
             left.push_back(it);
@@ -126,6 +132,7 @@ pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
         right.insert(right.begin(), p);
     }
 
+    // Compute closest pair in left and right sublists
     pair<Place*, Place*> leftClosest = closestPair(left);
     pair<Place*, Place*> rightClosest = closestPair(right);
     double ldist = leftClosest.first->dist(leftClosest.second);
@@ -140,6 +147,7 @@ pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
         minDist = rdist;
     }
 
+    // Find points within minimum distance of median
     vector<Place*> closeY;
     for (auto it : places) {
         if (abs(it->getLongitude() - median) < minDist) {
@@ -147,12 +155,14 @@ pair<Place*, Place*> Places::closestPair(const vector<Place*>& places) {
         }
     }
 
+    // Sort by Y
     sort(closeY.begin(),
          closeY.end(),
          [](const Place* p1, const Place* p2) {
             return p1->getLatitude() < p2->getLatitude();
          });
 
+    // Check if any pair of points in the strip is closer than minimum distance
     if (closeY.size() > 1) {
         for (unsigned int i = 0; i < closeY.size() - 1; ++i) {
             for (unsigned int j = i + 1; j < closeY.size() && j < i + 8; ++j) {
@@ -193,9 +203,20 @@ int main() {
             getline(file, input);
             int numLines = 0;
             places.deletePlaces();
-            while (getline(file, input)) {
-                vector<string> tokens = split(input, ',');
-                Place* p = new Place(tokens);
+            string country, city, region, latitude, longitude;
+            while (getline(file, country, ',')) {
+                getline(file, city, ',');
+
+                // Dump accent city
+                getline(file, region, ',');
+                getline(file, region, ',');
+
+                // Dump population
+                getline(file, latitude, ',');
+                getline(file, latitude, ',');
+                getline(file, longitude, '\n');
+                Place* p = new Place(
+                        country, region, city, latitude, longitude);
                 places.insertPlace(p);
                 ++numLines;
             }
@@ -211,7 +232,7 @@ int main() {
                 const Place* closest = p->closest(places.getPlaces());
                 cout << *p << endl;
                 cout << closest << endl;
-                cout << p->dist(closest) << " miles apart." << endl;
+                cout << p->dist(closest) << " miles away." << endl;
             } else {
                 cout << "City not found." << endl;
             }
@@ -220,7 +241,7 @@ int main() {
             double dist = p.first->dist(p.second);
             cout << *p.first << endl;
             cout << *p.second << endl;
-            cout << dist << " miles apart." << endl;
+            cout << dist << " miles away." << endl;
         } else if (input == "distance") {
             const Place* p1 = places.readPlace();
             if (p1 == NULL) {
