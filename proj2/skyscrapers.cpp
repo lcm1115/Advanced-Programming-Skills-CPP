@@ -1,3 +1,7 @@
+// File: skyscrapers.cpp
+// Author: Liam Morris
+// Description: Main program for solving skyscrapers puzzle.
+
 #include "backtrack.h"
 #include "skyscraperconfig.h"
 
@@ -6,23 +10,35 @@
 #include <iostream>
 #include <vector>
 
-using namespace std;
+using std::cerr;
+using std::cout;
+using std::endl;
+using std::ifstream;
+using std::vector;
 
 int main(int argc, char** argv) {
+    // Determine if path matters, validate input
     bool path = false;
     if (argc == 3) {
         if (strcmp(argv[1], "path") == 0) {
             path = true;
         } else {
             cerr << "Usage: skyscraper {path} {filename}" << endl;
-            exit(1);
+            return -1;
         }
     }
 
     ifstream input(argv[argc - 1], ifstream::in);
-   
+    if (!input.is_open()) {
+        cerr << "Invalid filepath" << endl;
+        return -1;
+    }
+  
+    // Read board size
     int n;
     input >> n;
+
+    // Read in clues
     vector<vector<int>> clues;
     int val;
     for (int i = 0; i < 4; ++i) {
@@ -34,6 +50,7 @@ int main(int argc, char** argv) {
         clues.push_back(row);
     }
 
+    // Read in prefilled values
     vector<vector<int>> prefilled;
     int row, col;
     while (input >> row) {
@@ -44,6 +61,7 @@ int main(int argc, char** argv) {
     
     input.close();
 
+    // Create config and solve puzzle (if solution exists)
     SkyscraperConfig config(n, clues, prefilled);
     Backtrack<SkyscraperConfig> b(config);
     SkyscraperConfig solution = b.solve();

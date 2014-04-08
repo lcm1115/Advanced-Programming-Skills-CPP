@@ -1,3 +1,9 @@
+// File: skyscraperconfig.cpp
+// Author: Liam Morris
+// Description: Implements functions described in skyscraperconfig.h for
+//              generating successor configs, validating configs, and
+//              determining if a config is a goal.
+
 #include "skyscraperconfig.h"
 
 #include <ostream>
@@ -11,11 +17,6 @@ using std::ostringstream;
 using std::set;
 using std::string;
 using std::vector;
-
-#include <iostream>
-using namespace std;
-
-bool debug = false;
 
 SkyscraperConfig::SkyscraperConfig(int n,
                                    const vector<vector<int>>& clues,
@@ -31,6 +32,7 @@ SkyscraperConfig::SkyscraperConfig(int n,
         _board.push_back(row);
     }
 
+    // Fill prefilled values
     for (auto it : prefilled) {
         int row = it.at(0);
         int col = it.at(1);
@@ -135,7 +137,6 @@ bool SkyscraperConfig::isGoal() const {
 }
 
 bool SkyscraperConfig::isValid() const {
-    if (debug) cout << "Validity:" << endl << *this << endl;
     int numSeenLR = 0;
     int numSeenRL = 0;
     int lastSeenLR = 0;
@@ -150,14 +151,19 @@ bool SkyscraperConfig::isValid() const {
     int clueDU = _clues.at(3).at(_lastCol);
     set<int> valuesR, valuesC;
     for (int i = 0; i < _n; ++i) {
+        // Keep track of how many skyscrapers are visible going from:
+        //     Left to right
+        //     Right to left
+        //     Up to down
+        //     Down to up
         int currentLR = _board.at(_lastRow).at(i);
         int currentRL = _board.at(_lastRow).at(_n - i - 1);
         int currentUD = _board.at(i).at(_lastCol);
         int currentDU = _board.at(_n - i - 1).at(_lastCol);
 
+        // If values are invalid return false
         if (currentLR != 0) {
             if (valuesR.find(currentLR) != valuesR.end()) {
-                if (debug) cout << "Row size fail" << endl;
                 return false;
             }
 
@@ -166,7 +172,6 @@ bool SkyscraperConfig::isValid() const {
 
         if (currentDU != 0) {
             if (valuesC.find(currentDU) != valuesC.end()) {
-                if (debug) cout << "Col size fail" << endl;
                 return false;
             }
 
@@ -203,7 +208,6 @@ bool SkyscraperConfig::isValid() const {
     if (valuesR.size() == (unsigned int) _n) {
         if ((clueLR != 0 && numSeenLR != clueLR) ||
             (clueRL != 0 && numSeenRL != clueRL)) {
-            if (debug) cout << "Row count fail" << endl;
             return false;
         }
     }
@@ -211,7 +215,6 @@ bool SkyscraperConfig::isValid() const {
     if (valuesC.size() == (unsigned int) _n) {
         if ((clueUD != 0 && numSeenUD != clueUD) ||
             (clueDU != 0 && numSeenDU != clueDU)) {
-            if (debug) cout << "Col count fail" << endl;
             return false;
         }
     }
@@ -222,6 +225,7 @@ bool SkyscraperConfig::isValid() const {
 vector<SkyscraperConfig> SkyscraperConfig::getSuccessors() const {
     vector<SkyscraperConfig> successors;
 
+    // Determine row and column of next position to be filled
     int row = _row;
     int col = _col + 1;
 
@@ -230,6 +234,7 @@ vector<SkyscraperConfig> SkyscraperConfig::getSuccessors() const {
         ++row;
     }
 
+    // If position on board is non-empty then move past it
     while (row < _n && _board.at(row).at(col) != 0) {
         ++col;
 
