@@ -118,9 +118,10 @@ int main(int argc, char** argv) {
     int edges = 0;
     for (unsigned int i = 0; i < words.size() - 1; ++i) {
         for (unsigned int j = i + 1; j < words.size(); ++j) {
-            if (words.at(i)->diffCount(*words.at(j)) == 1) {
-                words.at(i)->addNeighbor(words.at(j).get());
-                words.at(j)->addNeighbor(words.at(i).get());
+            int distance = words.at(i)->distance(*words.at(j));
+            if (distance != -1) {
+                words.at(i)->addNeighbor(words.at(j).get(), distance);
+                words.at(j)->addNeighbor(words.at(i).get(), distance);
                 ++edges;
             }
         }

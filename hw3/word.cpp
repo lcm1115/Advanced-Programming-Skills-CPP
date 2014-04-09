@@ -34,8 +34,15 @@ int Word::diffCount(const Word& s) const {
 
 int Word::distance(const Word& s) const {
     int distance = 0;
-    int minLength = min(_word.length(), s.getWord().length());
-    for (int i = 0; i < minLength; ++i) {
+    int diff = 0;
+    for (unsigned int i = 0; i < _word.length(); ++i) {
+        if (_word.at(i) != s.getWord().at(i)) {
+            ++diff;
+
+            if (diff > 1) {
+                return -1;
+            }
+        }
         distance += abs(_word.at(i) - s.getWord().at(i));
     }
 
@@ -46,8 +53,8 @@ map<Word*, int> Word::getNeighbors() {
     return _neighbors;
 }
 
-void Word::addNeighbor(Word* neighbor) {
-    _neighbors[neighbor] = distance(*neighbor);
+void Word::addNeighbor(Word* neighbor, int distance) {
+    _neighbors[neighbor] = distance;
 }
 
 int Word::getDistance() const {
@@ -79,5 +86,5 @@ bool Word::operator==(const Word& rhs) const {
 }
 
 bool WordCompare::operator()(const Word* w1, const Word* w2) const {
-    return w1->getDistance() > w2->getDistance();
+    return w1->getDistance() >= w2->getDistance();
 }

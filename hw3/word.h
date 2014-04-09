@@ -12,7 +12,7 @@ class Word {
 
         std::map<Word*, int> getNeighbors();
 
-        void addNeighbor(Word* neighbor);
+        void addNeighbor(Word* neighbor, int distance);
 
         void setDistance(int distance);
 
