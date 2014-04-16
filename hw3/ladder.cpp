@@ -122,7 +122,7 @@ int main(int argc, char** argv) {
             if (distance != -1) {
                 words.at(i)->addNeighbor(words.at(j).get(), distance);
                 words.at(j)->addNeighbor(words.at(i).get(), distance);
-                ++edges;
+                edges += 2;
             }
         }
     }
