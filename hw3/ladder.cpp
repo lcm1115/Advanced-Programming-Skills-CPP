@@ -1,27 +1,32 @@
 #include "word.h"
 
-#include <boost/heap/fibonacci_heap.hpp>
 #include <cstring>
 #include <deque>
 #include <iostream>
 #include <fstream>
 #include <memory>
+#include <set>
 #include <vector>
 
-using boost::heap::compare;
-using boost::heap::fibonacci_heap;
-using namespace std;
+using std::cerr;
+using std::cout;
+using std::deque;
+using std::endl;
+using std::ifstream;
+using std::map;
+using std::set;
+using std::shared_ptr;
+using std::string;
+using std::vector;
 
 deque<string> dijkstra(Word* start, Word* end) {
-    map<Word*, fibonacci_heap<Word*,
-        compare<WordCompare>>::handle_type> handles;
     map<Word*, Word*> predecessors;
-    fibonacci_heap<Word*, compare<WordCompare>> heap;
+    set<Word*, WordCompare> words;
 
-    handles[start] = heap.push(start);
+    words.insert(start);
 
-    while (!heap.empty() && !end->isVisited()) {
-        Word* current = heap.top();
+    while (!words.empty() && !end->isVisited()) {
+        Word* current = *words.begin();
         for (auto it : current->getNeighbors()) {
             if (it.first->isVisited()) {
                 continue;
@@ -30,19 +35,13 @@ deque<string> dijkstra(Word* start, Word* end) {
             int tentative = current->getDistance() + it.second;
             if (tentative < it.first->getDistance()) {
                 predecessors[it.first] = current;
-
+                words.erase(it.first);
                 it.first->setDistance(tentative);
-
-                if (handles.count(it.first) == 1) {
-                    heap.update(handles.at(it.first));
-                } else {
-                    handles[it.first] = heap.push(it.first);
-                }
+                words.insert(it.first);
             }
         }
 
-        heap.pop();
-        handles.erase(current);
+        words.erase(words.begin());
         current->markVisited();
     }
 

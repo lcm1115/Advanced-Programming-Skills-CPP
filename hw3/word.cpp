@@ -1,19 +1,16 @@
 #include "word.h"
 
-#include <algorithm>
 #include <cmath>
 #include <fstream>
-#include <queue>
 #include <limits>
-#include <set>
 #include <string>
 #include <map>
 #include <vector>
 
+using std::map;
+using std::min;
+using std::numeric_limits;
 using std::string;
-
-#include <iostream>
-using namespace std;
 
 Word::Word(string word) : _word(word) {
     _distance = numeric_limits<int>::max();
@@ -86,5 +83,5 @@ bool Word::operator==(const Word& rhs) const {
 }
 
 bool WordCompare::operator()(const Word* w1, const Word* w2) const {
-    return w1->getDistance() >= w2->getDistance();
+    return w1->getDistance() <= w2->getDistance();
 }
