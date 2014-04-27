@@ -1,3 +1,7 @@
+// File: word.cpp
+// Author: Liam Morris
+// Description: Implements functions defined in word.h.
+
 #include "word.h"
 
 #include <cmath>
@@ -15,18 +19,6 @@ using std::string;
 Word::Word(string word) : _word(word) {
     _distance = numeric_limits<int>::max();
     _visited = false;
-}
-
-int Word::diffCount(const Word& s) const {
-    int diff = 0;
-    int minLength = min(_word.length(), s.getWord().length());
-    for (int i = 0; i < minLength; ++i) {
-        if (_word.at(i) != s.getWord().at(i)) {
-            ++diff;
-        }
-    }
-
-    return diff;
 }
 
 int Word::distance(const Word& s) const {
@@ -75,13 +67,9 @@ bool Word::isVisited() const {
 }
 
 bool Word::operator<(const Word& rhs) const {
-    return _word < rhs.getWord();
+    return _word < rhs._word;
 }
 
 bool Word::operator==(const Word& rhs) const {
     return _word == rhs._word;
-}
-
-bool WordCompare::operator()(const Word* w1, const Word* w2) const {
-    return w1->getDistance() <= w2->getDistance();
 }

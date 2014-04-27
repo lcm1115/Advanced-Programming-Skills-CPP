@@ -1,3 +1,7 @@
+// File: ladder.cpp
+// Author: Liam Morris
+// Description: Contains main function and Dijkstra's algorithm function.
+
 #include "word.h"
 
 #include <cstring>
@@ -20,8 +24,14 @@ using std::string;
 using std::vector;
 
 deque<string> dijkstra(Word* start, Word* end) {
+    // Maintain list of predecessors for constructing path.
     map<Word*, Word*> predecessors;
-    set<Word*, WordCompare> words;
+
+    // Set used as a priority queue with priority dictated by distance.
+    auto comp = [](const Word* w1, const Word* w2) {
+        return w1->getDistance() <= w2->getDistance();
+    };
+    set<Word*, decltype(comp)> words(comp);
 
     words.insert(start);
 
@@ -32,6 +42,8 @@ deque<string> dijkstra(Word* start, Word* end) {
                 continue;
             }
 
+            // Compute distance to neighbor through this node. If less than
+            // current distance, update accordingly.
             int tentative = current->getDistance() + it.second;
             if (tentative < it.first->getDistance()) {
                 predecessors[it.first] = current;
@@ -70,7 +82,7 @@ int main(int argc, char** argv) {
         return -1;
     } else {
         if (argc > 4) {
-            if (strcmp(argv[1], "-v") != 0) {
+            if (strcmp(argv[1], "-v") != 0 || argc > 5) {
                 usage();
                 return -1;
             } else {
@@ -114,6 +126,7 @@ int main(int argc, char** argv) {
         return -1;
     }
 
+    // Build graph of words.
     int edges = 0;
     for (unsigned int i = 0; i < words.size() - 1; ++i) {
         for (unsigned int j = i + 1; j < words.size(); ++j) {
@@ -126,6 +139,7 @@ int main(int argc, char** argv) {
         }
     }
 
+    // Print out edges if verbose mode enabled.
     if (verbose) {
         cout << "GRAPH:" << endl;
         for (auto word : words) {
