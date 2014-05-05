@@ -523,6 +523,9 @@ moc_skyscrapers.cpp: borderlayout.h \
 		skyscraperconfig.h \
 		/usr/include/qt/QtWidgets/QGridLayout \
 		/usr/include/qt/QtWidgets/QHBoxLayout \
+		/usr/include/qt/QtWidgets/QLabel \
+		/usr/include/qt/QtWidgets/qlabel.h \
+		/usr/include/qt/QtWidgets/qframe.h \
 		/usr/include/qt/QtWidgets/QVBoxLayout \
 		/usr/include/qt/QtWidgets/QWidget \
 		skyscrapers.h
@@ -667,6 +670,9 @@ main.o: main.cpp skyscrapers.h \
 		skyscraperconfig.h \
 		/usr/include/qt/QtWidgets/QGridLayout \
 		/usr/include/qt/QtWidgets/QHBoxLayout \
+		/usr/include/qt/QtWidgets/QLabel \
+		/usr/include/qt/QtWidgets/qlabel.h \
+		/usr/include/qt/QtWidgets/qframe.h \
 		/usr/include/qt/QtWidgets/QVBoxLayout \
 		/usr/include/qt/QtWidgets/QWidget \
 		/usr/include/qt/QtWidgets/QApplication \
@@ -806,15 +812,19 @@ skyscrapers.o: skyscrapers.cpp skyscrapers.h \
 		skyscraperconfig.h \
 		/usr/include/qt/QtWidgets/QGridLayout \
 		/usr/include/qt/QtWidgets/QHBoxLayout \
-		/usr/include/qt/QtWidgets/QVBoxLayout \
-		/usr/include/qt/QtWidgets/QWidget \
-		backtrack.h \
 		/usr/include/qt/QtWidgets/QLabel \
 		/usr/include/qt/QtWidgets/qlabel.h \
 		/usr/include/qt/QtWidgets/qframe.h \
+		/usr/include/qt/QtWidgets/QVBoxLayout \
+		/usr/include/qt/QtWidgets/QWidget \
+		backtrack.h \
+		/usr/include/qt/QtWidgets/QFileDialog \
+		/usr/include/qt/QtWidgets/qfiledialog.h \
+		/usr/include/qt/QtCore/qdir.h \
+		/usr/include/qt/QtCore/qfileinfo.h \
+		/usr/include/qt/QtWidgets/qdialog.h \
 		/usr/include/qt/QtWidgets/QMessageBox \
-		/usr/include/qt/QtWidgets/qmessagebox.h \
-		/usr/include/qt/QtWidgets/qdialog.h
+		/usr/include/qt/QtWidgets/qmessagebox.h
 	$(CXX) -c $(CXXFLAGS) $(INCPATH) -o skyscrapers.o skyscrapers.cpp
 
 backtrack.o: backtrack.cpp backtrack.h \

@@ -20,23 +20,36 @@ using std::string;
 using std::vector;
 
 SkyscraperConfig::SkyscraperConfig(int n,
-                                   const vector<vector<int>>& clues)
-    : _failure(false), _row(0), _col(0), _n(n), _clues(clues) {
+                                   const vector<vector<int>>& clues,
+                                   const vector<vector<int>>& prefilled)
+    : _failure(false),
+      _row(0),
+      _col(0),
+      _n(n),
+      _prefilled(prefilled),
+      _clues(clues) {
     for (int i = 0; i < n; ++i) {
         _board.push_back(vector<int>());
         for (int j = 0; j < n; ++j) {
             _board.at(i).push_back(0);
         }
     }
+
+    for (auto it : _prefilled) {
+        int row = it.at(0);
+        int col = it.at(1);
+        int val = it.at(2);
+        _board.at(row).at(col) = val;
+    }
 }
 
 SkyscraperConfig::SkyscraperConfig(bool failure) : _failure(failure) { }
 
 void SkyscraperConfig::clickPos(int pos) {
-    int row = pos / 5;
-    int col = pos % 5;
+    int row = pos / _n;
+    int col = pos % _n;
     ++_board.at(row).at(col);
-    _board.at(row).at(col) %= 6;
+    _board.at(row).at(col) %= _n + 1;
 }
 
 void SkyscraperConfig::clear() {
@@ -45,14 +58,21 @@ void SkyscraperConfig::clear() {
             _board.at(i).at(j) = 0;
         }
     }
+
+    for (auto it : _prefilled) {
+        int row = it.at(0);
+        int col = it.at(1);
+        int val = it.at(2);
+        _board.at(row).at(col) = val;
+    }
 }
 
 void SkyscraperConfig::setValueAtPos(int value, int pos) {
-    _board.at(pos / 5).at(pos % 5) = value;
+    _board.at(pos / _n).at(pos % _n) = value;
 }
 
 int SkyscraperConfig::getValueAtPos(int pos) const {
-    return _board.at(pos / 5).at(pos % 5);
+    return _board.at(pos / _n).at(pos % _n);
 }
 
 void SkyscraperConfig::setPos() {
@@ -67,6 +87,10 @@ void SkyscraperConfig::setPos() {
     }
 
     _row = _n;
+}
+
+int SkyscraperConfig::getSize() const {
+    return _n;
 }
 
 int SkyscraperConfig::getRow() const {
@@ -86,7 +110,7 @@ bool SkyscraperConfig::isGoal() const {
 }
 
 bool SkyscraperConfig::isValid() const {
-    for (int cur = 0; cur < 5; ++cur) {
+    for (int cur = 0; cur < _n; ++cur) {
         int numSeenLR = 0;
         int numSeenRL = 0;
         int lastSeenLR = 0;

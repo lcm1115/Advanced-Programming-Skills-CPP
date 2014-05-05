@@ -4,7 +4,7 @@
 #include <QString>
 #include <QWidget>
 
-GridButton::GridButton(int pos, QString text, QWidget* parent)
+GridButton::GridButton(int pos, const QString& text, QWidget* parent)
     : QPushButton(text, parent),
       _pos(pos)
 {

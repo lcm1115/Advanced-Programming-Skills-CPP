@@ -14,8 +14,8 @@ int main(int argc, char *argv[])
     QMessageBox* instructions = new QMessageBox(&w);
     instructions->setWindowTitle("Instructions");
     instructions->setText("Skyscrapers Instructions:\n\n"
-                          "1. The board state consists of a 5x5 grid of numbers "
-                          "ranging from 1-5. Each number represents the "
+                          "1. The board state consists of a NxN grid of numbers "
+                          "ranging from 1-N. Each number represents the "
                           "height of a skyscraper at that position.\n"
                           "2. Along each side of the board are numbers. What "
                           "each of these numbers represents is the number of "

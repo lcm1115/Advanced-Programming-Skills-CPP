@@ -7,9 +7,11 @@
 
 #include <QGridLayout>
 #include <QHBoxLayout>
+#include <QLabel>
 #include <QPushButton>
 #include <QVBoxLayout>
 #include <QWidget>
+#include <string>
 #include <vector>
 
 class Skyscrapers : public QWidget
@@ -20,14 +22,14 @@ public:
     Skyscrapers(QWidget *parent = nullptr);
 
 private:
-    std::vector<std::vector<int>> clues = { { 2, 1, 4, 2, 2 },
-                                            { 2, 1, 2, 3, 3 },
-                                            { 3, 5, 1, 2, 2 },
-                                            { 4, 3, 1, 2, 2 } };
+    void loadConfig(std::string filepath);
+
     std::vector<GridButton*> gridButtons;
+    std::vector<QLabel*> labels;
     std::vector<SkyscraperConfig> history;
     QGridLayout* gridLayout;
     QHBoxLayout* topLayout;
+    QPushButton* loadButton;
     QPushButton* checkButton;
     QPushButton* clearButton;
     QPushButton* hintButton;
@@ -47,6 +49,7 @@ private slots:
     void slotTryButton();
     void slotUndoButton();
     void slotGridButton();
+    void slotLoadButton();
 };
 
 #endif // SKYSCRAPERS_H

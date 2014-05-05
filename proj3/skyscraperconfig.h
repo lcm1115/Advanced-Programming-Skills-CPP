@@ -14,7 +14,8 @@ class SkyscraperConfig {
         //   int n - the size of the board
         //   vector<int> clues - the clues along the sides of the board
         SkyscraperConfig(int n,
-                         const std::vector<std::vector<int>>& clues);
+                         const std::vector<std::vector<int>>& clues,
+                         const std::vector<std::vector<int>>& prefilled);
 
         // Constructs a SkyscraperConfig with FAIL state
         // Input:
@@ -30,6 +31,8 @@ class SkyscraperConfig {
         int getValueAtPos(int pos) const;
 
         void setPos();
+
+        int getSize() const;
 
         int getRow() const;
 
@@ -73,6 +76,8 @@ class SkyscraperConfig {
 
         // Board size
         int _n;
+
+        std::vector<std::vector<int>> _prefilled;
 
         // Board clues
         std::vector<std::vector<int>> _clues;

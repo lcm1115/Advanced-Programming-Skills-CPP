@@ -31,4 +31,7 @@ HEADERS  += skyscrapers.h \
 FORMS    +=
 
 OTHER_FILES += \
-    proj3.pro.user
+    proj3.pro.user \
+    input.1 \
+    input.2 \
+    input.3

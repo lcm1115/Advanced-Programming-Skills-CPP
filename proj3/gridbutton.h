@@ -7,7 +7,7 @@
 class GridButton : public QPushButton
 {
 public:
-    GridButton(int pos, QString text, QWidget* parent = 0);
+    GridButton(int pos, const QString& text, QWidget* parent = 0);
 
     int getPos() const;
 
