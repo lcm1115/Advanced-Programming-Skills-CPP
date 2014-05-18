@@ -1,4 +1,4 @@
-// File: wheelconfig.h
+// File: skyscraperconfig.h
 // Author: Liam Morris
 // Description: A class that represents a 2D board of skyscrapers.
 

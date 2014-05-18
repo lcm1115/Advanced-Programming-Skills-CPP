@@ -2,6 +2,9 @@
 // Author: Liam Morris
 // Description: A class that represents a 2D board of skyscrapers.
 
+#ifndef SKYSCRAPER_CONFIG_H
+#define SKYSCRAPER_CONFIG_H
+
 #include <ostream>
 #include <string>
 #include <vector>
@@ -13,6 +16,7 @@ class SkyscraperConfig {
         // Input:
         //   int n - the size of the board
         //   vector<int> clues - the clues along the sides of the board
+        //   vector<vector<int>> prefilled - prefilled board values
         SkyscraperConfig(int n,
                          const std::vector<std::vector<int>>& clues,
                          const std::vector<std::vector<int>>& prefilled);
@@ -21,22 +25,6 @@ class SkyscraperConfig {
         // Input:
         //   bool failure - whether or not config is a FAIL state
         SkyscraperConfig(bool failure);
-
-        void clickPos(int pos);
-
-        void clear();
-
-        void setValueAtPos(int value, int pos);
-
-        int getValueAtPos(int pos) const;
-
-        void setPos();
-
-        int getSize() const;
-
-        int getRow() const;
-
-        int getCol() const;
 
         // Determines if the config is a failure.
         // Output:
@@ -68,16 +56,20 @@ class SkyscraperConfig {
         static const SkyscraperConfig FAIL; 
 
     private:
+        // Fails quickly on impossible boards
+        bool _quickfail;
+
         // Failure status
         bool _failure;
 
         // Current row and column that needs to be filled
         int _row, _col;
 
+        // Last row and column that were filled
+        int _lastRow, _lastCol;
+
         // Board size
         int _n;
-
-        std::vector<std::vector<int>> _prefilled;
 
         // Board clues
         std::vector<std::vector<int>> _clues;
@@ -85,3 +77,5 @@ class SkyscraperConfig {
         // Board state
         std::vector<std::vector<int>> _board;
 };
+
+#endif  // SKYSCRAPER_CONFIG_H

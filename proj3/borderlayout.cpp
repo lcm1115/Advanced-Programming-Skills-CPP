@@ -57,7 +57,7 @@ BorderLayout::BorderLayout(int spacing)
 BorderLayout::~BorderLayout()
 {
     QLayoutItem *l;
-    while ((l = takeAt(0)))
+    while (l = takeAt(0))
         delete l;
 }
 
